@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Tenant;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,6 +28,17 @@ use Inertia\Inertia;
 
 foreach (config('tenancy.central_domains') as $domain) {
     Route::domain($domain)->group(function () {
-        
+        // Central routes that should be accessible on central domains
+        Route::get('/', function () {
+            return 'Welcome to the central application. This is not tenant-specific.';
+        })->name('central.home');
+
+        Route::get('/tenants', function () {
+            // Example central route to list tenants
+            $tenants = Tenant::get();
+            return response()->json(['tenants' => $tenants]);
+        })->name('central.tenants');
+
+        // Add more central routes here as needed
     });
 }

@@ -121,9 +121,10 @@ class AuthController extends Controller
     public function user(Request $request): JsonResponse
     {
         try {
+            $data = User::get();
             return response()->json([
                 'success' => true,
-                'data' => $request->user(),
+                'data' => $data,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

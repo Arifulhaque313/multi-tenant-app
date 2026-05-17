@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\AuthController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
@@ -38,7 +39,7 @@ Route::middleware([
 ])->prefix('api')->group(function () {
     // Health check
     Route::get('/ping', function () {
-        return response()->json(['message' => 'pong']);
+        return response()->json(['message' => "pong", 'tenant_id' => tenant('id')]);
     })->name('tenant.ping');
 
     // Public auth routes (no authentication required)
@@ -56,8 +57,8 @@ Route::middleware([
         });
 
         // Additional user routes
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
+        // Route::get('/user', function (Request $request) {
+        //     dd($request->user());
+        // });
     });
 });
