@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Central\AuthController;
+use App\Http\Controllers\Central\TenantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +16,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Health check endpoint
-// Route::get('/ping', function () {
-//     return response()->json(['message' => 'pong']);
-// })->name('ping');
+Route::group(['prefix' => 'central'], function () {
+    Route::get('/ping', function () {
+        return response()->json(['status' => 'ok']);
+    });
 
-// Add central API routes here if needed
-// Example: Route::get('/info', ...)
+    Route::post('/register', [AuthController::class, 'register']);
+
+    Route::get('tenants',          [TenantController::class, 'index']);
+    Route::post('tenants',         [TenantController::class, 'store']);
+    Route::get('tenants/{id}',     [TenantController::class, 'show']);
+    Route::delete('tenants/{id}',  [TenantController::class, 'destroy']);
+});

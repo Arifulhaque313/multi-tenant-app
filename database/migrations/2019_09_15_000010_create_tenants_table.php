@@ -17,9 +17,11 @@ class CreateTenantsTable extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->string('id')->primary();
-
-            // your custom columns may go here
-
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->string('company_name');
+            // $table->string('plan')->default('free'); that will be mapper table 
+            $table->string('address')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->json('data')->nullable();
         });
